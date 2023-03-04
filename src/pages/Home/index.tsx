@@ -29,7 +29,6 @@ export default function Home() {
                     min={5}
                     step={5}
                 />
-
                 <span>minutos.</span>
             </header>
             <main>

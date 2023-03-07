@@ -1,9 +1,31 @@
 import { Play } from "phosphor-react";
+import { useForm } from "react-hook-form";
 import { InputMinutes, InputTask, StyledHomeContainer, StyledStartButton } from "./styles";
 
 export default function Home() {
+
+    type FieldsForm = {
+        task: string,
+        minutes: string
+    }
+
+    const {register, handleSubmit, watch, reset} = useForm<FieldsForm>({
+        defaultValues:{
+            task: '',
+            minutes:''
+        }
+    });
+
+    const task = watch('task')
+
+    let isStartDisabled = !task;
+
+    function handleStartCycle(fieldsData: FieldsForm) {
+        reset()
+    }
+
     return (
-        <StyledHomeContainer>
+        <StyledHomeContainer onSubmit={handleSubmit(handleStartCycle)}>
             <header>
                 <label htmlFor="task">Estou trabalhando em</label>
                 <InputTask 
@@ -11,6 +33,7 @@ export default function Home() {
                     id="task" 
                     list="task-suggestions"
                     placeholder="uma tarefa importante"
+                    {...register('task')}
                 />
 
                 <datalist id="task-suggestions">
@@ -28,6 +51,7 @@ export default function Home() {
                     max={60}
                     min={5}
                     step={5}
+                    {...register('minutes')}
                 />
                 <span>minutos.</span>
             </header>
@@ -38,9 +62,8 @@ export default function Home() {
                 <span>0</span>
                 <span>0</span>
             </main>
-            <StyledStartButton type="submit" disabled>
-                Iniciar
-                <Play size={32} />
+            <StyledStartButton type="submit" disabled={isStartDisabled}>
+                Iniciar <Play size={32} />
             </StyledStartButton>
         </StyledHomeContainer>
     )

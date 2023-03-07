@@ -20,7 +20,7 @@ export default function History() {
                             <td>60 minutos</td>
                             <td>Há 2 horas</td>
                             <td>
-                                <StyledStatusIndicator>
+                                <StyledStatusIndicator status='progress'>
                                     Em andamento
                                 </StyledStatusIndicator>
                             </td>
@@ -30,7 +30,7 @@ export default function History() {
                             <td>60 minutos</td>
                             <td>Há 2 horas</td>
                             <td>
-                                <StyledStatusIndicator>
+                                <StyledStatusIndicator status='progress'>
                                     Em andamento
                                 </StyledStatusIndicator>
                             </td>
@@ -40,7 +40,7 @@ export default function History() {
                             <td>60 minutos</td>
                             <td>Há 2 horas</td>
                             <td>
-                                <StyledStatusIndicator>
+                                <StyledStatusIndicator status='progress'>
                                     Em andamento
                                 </StyledStatusIndicator>
                             </td>
@@ -50,7 +50,7 @@ export default function History() {
                             <td>60 minutos</td>
                             <td>Há 2 horas</td>
                             <td>
-                            <StyledStatusIndicator>
+                            <StyledStatusIndicator status='progress'>
                                 Em andamento
                             </StyledStatusIndicator>
                             </td>

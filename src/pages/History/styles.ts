@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { DEFAULT_THEME } from '../../styles/themes/Default';
 
 export const StyledHistoryContainer = styled.main`
     flex:1;
@@ -55,14 +54,16 @@ export const StyledHistoryList = styled.div`
 `
 
 const STATUS_INDICATOR_COLORS = {
-    completed: keyof typeof DEFAULT_THEME
-} 
+    completed:   ['green' , '500'],
+    progress:    ['yellow', '500'],
+    interrupted: ['red'   , '500']
+} as const
 
 interface PropsStatusIndicator{
-    status: keyof typeof DEFAULT_THEME
+    status: keyof typeof STATUS_INDICATOR_COLORS
 }
 
-export const StyledStatusIndicator = styled.span`
+export const StyledStatusIndicator = styled.span<PropsStatusIndicator>`
     display: flex;
     align-items: center;
     gap:0.5rem;
@@ -72,6 +73,9 @@ export const StyledStatusIndicator = styled.span`
         width:0.5rem;
         height:0.5rem;
         border-radius: 50%;
-        background: ${props => props.theme.yellow[500]}
+        background: ${props => {
+            let [color, tonality] = STATUS_INDICATOR_COLORS[props.status]
+            return props.theme[color][tonality]
+        }}
     }
 `

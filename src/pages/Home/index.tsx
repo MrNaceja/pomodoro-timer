@@ -1,4 +1,5 @@
 import { Play } from "phosphor-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { InputMinutes, InputTask, StyledHomeContainer, StyledStartButton } from "./styles";
 
@@ -8,6 +9,15 @@ export default function Home() {
         task: string,
         minutes: string
     }
+
+    interface Cycle{
+        id:string,
+        task: string,
+        minutes: string
+    }
+
+    const [cycles, setCycles] = useState<Cycle[]>([])
+    const [activeCycle, setActiveCycle] = useState<Cycle | null>(null)
 
     const {register, handleSubmit, watch, reset} = useForm<FieldsForm>({
         defaultValues:{
@@ -21,6 +31,12 @@ export default function Home() {
     let isStartDisabled = !task;
 
     function handleStartCycle(fieldsData: FieldsForm) {
+        const newCycle: Cycle = {
+            id: String(new Date().getTime()),
+            ...fieldsData
+        }
+        setCycles([...cycles, newCycle])
+        setActiveCycle(newCycle)
         reset()
     }
 

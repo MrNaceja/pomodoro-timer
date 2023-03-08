@@ -19,7 +19,7 @@ export const GlobalStyle = createGlobalStyle`
  }
 
  body, input, textarea, button {
-   font-family: 'Poppins', sans-serif;
+   font-family: 'Roboto', monospace;
    font-weight: 400;
    font-size: 1rem;
  }

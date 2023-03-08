@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 export default function Header() {
     return (
         <StyledHeaderContainer>
-            <span>Timer <Atom size={32}/></span>
+            <span>Pomodoro Timer <Atom size={32}/></span>
             <nav>
                 <NavLink to="/" title="Timer">
                     <Timer size={24}/>

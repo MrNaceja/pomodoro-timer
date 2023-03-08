@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const StyledHomeContainer = styled.form`
     flex: 1;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -59,9 +60,8 @@ export const InputMinutes = styled(InputBase)`
     width:4rem;
 `
 
-export const StyledStartButton = styled.button`
-    width: 80%;
-    background: ${props => props.theme.green[900]};
+const StyledTimerButton = styled.button`
+    width: 100%;
     padding:1rem;
     color: ${props => props.theme.gray[100]};
     display:flex;
@@ -81,8 +81,17 @@ export const StyledStartButton = styled.button`
         cursor: not-allowed;
     }
 
+`
+
+export const StyledStartButton = styled(StyledTimerButton)`
+    background: ${props => props.theme.green[900]};
     &:not(:disabled):hover {
         background: ${props => props.theme.green[500]}
     }
-
+`
+export const StyledInterruptButton = styled(StyledTimerButton)`
+    background: ${props => props.theme.red[900]};
+    &:not(:disabled):hover {
+        background: ${props => props.theme.red[500]}
+    }
 `

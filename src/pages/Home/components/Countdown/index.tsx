@@ -1,11 +1,9 @@
 import { differenceInSeconds } from 'date-fns'
 import { useContext, useEffect, useState } from 'react'
-import { ContextCycles } from './../../index';
+import { ContextCycles } from '../../../../Contexts/ContextCyclesProvider'
 
 export default function Countdown() {
-    const { activeCycle, completeCycle } = useContext(ContextCycles)
-
-    const [secondsCount, setSecondsCount] = useState<number>(0)
+    const { activeCycle, completeCycle, setSecondsPassed, secondsPassed } = useContext(ContextCycles)
 
     const minutesTotal = activeCycle ? parseInt(activeCycle.minutes) : 0
     const secondsTotal = activeCycle ? (minutesTotal * 60) : 0
@@ -14,12 +12,12 @@ export default function Countdown() {
         let intervalTimer: number
         if (activeCycle) {
             intervalTimer = setInterval(()=> {
-                const secondsPassed = differenceInSeconds(new Date, activeCycle.start)
-                if (secondsPassed == secondsTotal) {
+                const secondsDifference = differenceInSeconds(new Date, activeCycle.start)
+                if (secondsDifference == secondsTotal) {
                     completeCycle()
                     clearInterval(intervalTimer)
                 }
-                setSecondsCount(secondsPassed)
+                setSecondsPassed(secondsDifference)
             }, 1000)
         }
         return () => {
@@ -27,7 +25,7 @@ export default function Countdown() {
         }
     }, [activeCycle, completeCycle])
     
-    const secondsLeft = activeCycle ? (secondsTotal - secondsCount) : 0
+    const secondsLeft = activeCycle ? (secondsTotal - secondsPassed) : 0
     const minutesLeft = activeCycle ? Math.floor(secondsLeft / 60)  : 0
 
     const minutesFormatted = String(minutesLeft     ).padStart(2, '0')
@@ -39,7 +37,7 @@ export default function Countdown() {
         } else {
             document.title = 'Pomodoro Timer'
         }
-    }, [secondsCount, activeCycle])
+    }, [secondsPassed, activeCycle])
 
     return (
         <main>

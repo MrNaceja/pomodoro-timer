@@ -1,91 +1,38 @@
 import { HandPalm, Play } from "phosphor-react";
-import { createContext, useState } from "react";
 import {StyledHomeContainer, StyledStartButton, StyledInterruptButton } from './styles';
 import CycleForm from "./components/CycleForm";
 import Countdown from "./components/Countdown";
-import { FieldsCycleForm } from './components/CycleForm/index';
 import { FormProvider, useForm } from "react-hook-form";
+import { useContext } from 'react';
+import { ContextCycles, PropsNewCycleData } from "../../Contexts/ContextCyclesProvider";
 
-interface Cycle{
-    id:string,
-    task: string,
-    minutes: string,
-    start: Date,
-    interrupted?: Date,
-    completed?: Date
-}
 
-interface ContextCyclesValues{
-    activeCycle: Cycle | undefined,
-    completeCycle: () => void,
-}
-
-export const ContextCycles = createContext({} as ContextCyclesValues)
 
 export default function Home() {
-    const cycleForm = useForm<FieldsCycleForm>({
+    const { activeCycle, startCycle, interruptCycle } = useContext(ContextCycles)
+    const cycleForm = useForm<PropsNewCycleData>({
         defaultValues:{
             task: '',
             minutes:''
         }
     });
+    const isStartDisabled = !cycleForm.watch('task');
 
-
-    const [cycles, setCycles] = useState<Cycle[]>([])
-    const [activeCycle, setActiveCycle] = useState<Cycle | undefinded>(undefined)
-
-    function handleStartCycle(fieldsCycleFormData : FieldsCycleForm) {
-        const newCycle: Cycle = {
-            id: String(new Date().getTime()),
-            start: new Date(),
-            ...fieldsCycleFormData
-        }
-        setCycles([...cycles, newCycle])
-        setActiveCycle(newCycle)
+    function onSubmitCreateNewCycle(formDate : PropsNewCycleData) {
+        startCycle(formDate)
         cycleForm.reset()
     }
 
-    function handleCompleteCycle() {
-        setCycles(currentCycles => currentCycles.map(cycle => {
-            const idCycleActive = activeCycle ? activeCycle.id : null
-            if (cycle.id == idCycleActive) {
-                cycle.completed = new Date()
-            }
-            return cycle
-        }))
-        setActiveCycle(null)
-    }
-
-    function handleInterrupCycle() {
-        setCycles(currentCycles => currentCycles.map(cycle => {
-            const idCycleActive = activeCycle ? activeCycle.id : null
-            if (cycle.id == idCycleActive) {
-                cycle.interrupted = new Date()
-            }
-            return cycle
-        }))
-        setActiveCycle(null)
-        setSecondsCount(0)
-    }
-
-    const isStartDisabled = !cycleForm.watch('task');
-
     return (
-        <StyledHomeContainer onSubmit={cycleForm.handleSubmit(handleStartCycle)}>
-            <ContextCycles.Provider value={{
-                activeCycle: activeCycle,
-                completeCycle: handleCompleteCycle,
-            }}>
-
+        <StyledHomeContainer onSubmit={cycleForm.handleSubmit(onSubmitCreateNewCycle)}>
             <FormProvider {...cycleForm}>
                 <CycleForm/>
             </FormProvider>
                 <Countdown/>
-            </ContextCycles.Provider>
             {
             activeCycle
             ? (
-                <StyledInterruptButton type="button" onClick={handleInterrupCycle}>
+                <StyledInterruptButton type="button" onClick={interruptCycle}>
                     Parar <HandPalm size={32} />
                 </StyledInterruptButton>
             )

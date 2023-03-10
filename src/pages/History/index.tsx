@@ -1,6 +1,11 @@
 import { StyledHistoryContainer, StyledHistoryList, StyledStatusIndicator } from './styles';
+import { ContextCycles } from '../../Contexts/ContextCyclesProvider';
+import { useContext } from 'react';
 
 export default function History() {
+
+    const { cycles } = useContext(ContextCycles)
+
     return (
         <StyledHistoryContainer>
             <h1>Meu Histórico</h1>
@@ -15,46 +20,34 @@ export default function History() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Estudar react</td>
-                            <td>60 minutos</td>
-                            <td>Há 2 horas</td>
-                            <td>
-                                <StyledStatusIndicator status='progress'>
-                                    Em andamento
-                                </StyledStatusIndicator>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Estudar react</td>
-                            <td>60 minutos</td>
-                            <td>Há 2 horas</td>
-                            <td>
-                                <StyledStatusIndicator status='progress'>
-                                    Em andamento
-                                </StyledStatusIndicator>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Estudar react</td>
-                            <td>60 minutos</td>
-                            <td>Há 2 horas</td>
-                            <td>
-                                <StyledStatusIndicator status='progress'>
-                                    Em andamento
-                                </StyledStatusIndicator>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Estudar react</td>
-                            <td>60 minutos</td>
-                            <td>Há 2 horas</td>
-                            <td>
-                            <StyledStatusIndicator status='progress'>
-                                Em andamento
-                            </StyledStatusIndicator>
-                            </td>
-                        </tr>
+                    {
+                    cycles.map(cycle => {
+                        return (
+                            <tr key={cycle.id}>
+                                <td>{cycle.task}</td>
+                                <td>{cycle.minutes} minutos</td>
+                                <td>{cycle.start.toISOString()}</td>
+                                <td>
+                                {
+                                    cycle.completed && (
+                                        <StyledStatusIndicator status='completed'>Completo</StyledStatusIndicator>
+                                    )
+                                }
+                                {
+                                    cycle.interrupted && (
+                                        <StyledStatusIndicator status='interrupted'>Interrompido</StyledStatusIndicator>
+                                    )
+                                }
+                                {
+                                    (!cycle.interrupted && !cycle.completed) && (
+                                        <StyledStatusIndicator status='progress'>Em Progresso</StyledStatusIndicator>
+                                    )
+                                }
+                                </td>
+                            </tr>
+                        ) 
+                    })
+                    }
                     </tbody>
                 </table>
             </StyledHistoryList>

@@ -12,7 +12,9 @@ export default function History() {
         <StyledHistoryContainer>
             <h1>Meu Histórico</h1>
             <StyledHistoryList>
-                <table>
+                {
+                    cycles.length > 0  ? (
+                        <table>
                     <thead>
                         <tr>
                             <th>Tarefa</th>
@@ -52,6 +54,8 @@ export default function History() {
                     }
                     </tbody>
                 </table>
+                    ) : <h1 id="no-cycles">Não há ciclos criados ou em andamento :(</h1>
+                }
             </StyledHistoryList>
         </StyledHistoryContainer>
     )

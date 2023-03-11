@@ -5,7 +5,6 @@ export const StyledHistoryContainer = styled.main`
     display:flex;
     flex-direction: column;
     padding: 1.5rem;
-
     h1 {
         font-size:1.5rem;
     }
@@ -14,6 +13,15 @@ export const StyledHistoryList = styled.div`
     flex:1;
     overflow: auto;
     margin-top:2rem;
+
+    &:has(#no-cycles) {
+        display:grid;
+        place-items: center;
+        
+        #no-cycles {
+            color: ${props => props.theme.gray[300]};
+        }
+    }
 
     table {
         border-collapse: collapse;

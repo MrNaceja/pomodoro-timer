@@ -1,6 +1,9 @@
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useReducer, useState } from 'react';
+import { EnumCycleStateAction } from '../enum/EnumCycleStateAction';
+import { ActionsCycle } from '../reducers/Cycles/action';
+import CyclesReducer from '../reducers/Cycles/reducer';
 
-interface Cycle{
+export interface Cycle{
     id:string,
     task: string,
     minutes: string,
@@ -32,9 +35,14 @@ interface PropsContextCyclesProvider{
 }
 
 export default function ContextCyclesProvider({ children } : PropsContextCyclesProvider) {
-    const [cycles, setCycles] = useState<Cycle[]>([])
-    const [activeCycle, setActiveCycle] = useState<Cycle | undefined>(undefined)
     const [secondsCount, setSecondsCount] = useState<number>(0)
+    const [cycleState, dispatchCycleState] = useReducer(CyclesReducer, {
+        cycles: [],
+        activeCycle: undefined
+    })
+
+    const {cycles, activeCycle} = cycleState
+
 
     function startCycle(newCycleData : PropsNewCycleData) {
         const newCycle: Cycle = {
@@ -42,30 +50,15 @@ export default function ContextCyclesProvider({ children } : PropsContextCyclesP
             start: new Date(),
             ...newCycleData
         }
-        setCycles([...cycles, newCycle])
-        setActiveCycle(newCycle)
+        dispatchCycleState(ActionsCycle.actionStartCycle(newCycle))
     }
 
     function completeCycle() {
-        setCycles(currentCycles => currentCycles.map(cycle => {
-            const idCycleActive = activeCycle ? activeCycle.id : null
-            if (cycle.id == idCycleActive) {
-                cycle.completed = new Date()
-            }
-            return cycle
-        }))
-        setActiveCycle(undefined)
+        dispatchCycleState(ActionsCycle.actionCompleteCycle())
     }
 
     function interruptCycle() {
-        setCycles(currentCycles => currentCycles.map(cycle => {
-            const idCycleActive = activeCycle ? activeCycle.id : null
-            if (cycle.id == idCycleActive) {
-                cycle.interrupted = new Date()
-            }
-            return cycle
-        }))
-        setActiveCycle(undefined)
+        dispatchCycleState(ActionsCycle.actionInterruptCycle())
         setSecondsCount(0)
     }
 

@@ -1,0 +1,5 @@
+export enum EnumCycleStateAction {
+    ACTION_START = 'START_CYCLE',
+    ACTION_INTERRUPT = 'INTERRUPT_CYCLE',
+    ACTION_COMPLETE = 'COMPLETE_CYCLE'
+}

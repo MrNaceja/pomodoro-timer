@@ -1,7 +1,6 @@
-import { createContext, ReactNode, useReducer, useState } from 'react';
-import { EnumCycleStateAction } from '../enum/EnumCycleStateAction';
+import { createContext, ReactNode, useReducer, useState, useEffect } from 'react';
 import { ActionsCycle } from '../reducers/Cycles/action';
-import CyclesReducer from '../reducers/Cycles/reducer';
+import CyclesReducer, { CycleState } from '../reducers/Cycles/reducer';
 
 export interface Cycle{
     id:string,
@@ -14,13 +13,12 @@ export interface Cycle{
 
 interface ContextCyclesValues{
     cycles: Cycle[]
-    activeCycle: Cycle | undefined,
+    activeCycle: Cycle | null,
     secondsPassed: number,
     completeCycle: () => void,
     interruptCycle: () => void,
     startCycle: (newCycleData : PropsNewCycleData) => void,
     setSecondsPassed: (seconds : number) => void
-
 }
 
 export interface PropsNewCycleData{
@@ -30,18 +28,25 @@ export interface PropsNewCycleData{
 
 export const ContextCycles = createContext({} as ContextCyclesValues)
 
-interface PropsContextCyclesProvider{
-    children: ReactNode
-}
-
-export default function ContextCyclesProvider({ children } : PropsContextCyclesProvider) {
+export default function ContextCyclesProvider({ children } : { children: ReactNode}) {
     const [secondsCount, setSecondsCount] = useState<number>(0)
-    const [cycleState, dispatchCycleState] = useReducer(CyclesReducer, {
+    let initialStateCycles : CycleState = {
         cycles: [],
-        activeCycle: undefined
+        activeCycle: null
+    }
+    const [cycleState, dispatchCycleState] = useReducer(CyclesReducer, initialStateCycles , () => {//esta função do reducer utiliza o retono como valor inicial do estado caso haja.
+        const storagedCyclesState = localStorage.getItem('@pomodoro-timer:cycles-state:v1.0')
+        if (storagedCyclesState) {
+            initialStateCycles = JSON.parse(storagedCyclesState)
+        }
+        return initialStateCycles
     })
 
     const {cycles, activeCycle} = cycleState
+
+    useEffect(() => {
+        localStorage.setItem('@pomodoro-timer:cycles-state:v1.0', JSON.stringify(cycleState))
+    }, [cycleState])
 
 
     function startCycle(newCycleData : PropsNewCycleData) {

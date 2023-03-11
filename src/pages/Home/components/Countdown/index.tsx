@@ -12,7 +12,7 @@ export default function Countdown() {
         let intervalTimer: number
         if (activeCycle) {
             intervalTimer = setInterval(()=> {
-                const secondsDifference = differenceInSeconds(new Date, activeCycle.start)
+                const secondsDifference = differenceInSeconds(new Date(), new Date(activeCycle.start))
                 if (secondsDifference == secondsTotal) {
                     completeCycle()
                     clearInterval(intervalTimer)

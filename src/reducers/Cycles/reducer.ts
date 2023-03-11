@@ -1,9 +1,9 @@
 import { Cycle } from "../../Contexts/ContextCyclesProvider"
 import { EnumCycleStateAction } from "../../enum/EnumCycleStateAction"
 
-interface CycleState{
+export interface CycleState{
     cycles: Cycle[],
-    activeCycle: Cycle | undefined,
+    activeCycle: Cycle | null,
 }
 
 interface PropsActionCyclesReducer{
@@ -11,7 +11,7 @@ interface PropsActionCyclesReducer{
     stateInfo?: any
 }
 
-export default function CyclesReducer(state: CycleState, action: PropsActionCyclesReducer){
+export default function CyclesReducer(state: CycleState, action: PropsActionCyclesReducer) : CycleState{
     switch(action.stateAction) {
         case EnumCycleStateAction.ACTION_START:
             return {
@@ -27,7 +27,7 @@ export default function CyclesReducer(state: CycleState, action: PropsActionCycl
                     }
                     return cycle
                 }),
-                activeCycle: undefined
+                activeCycle: null
             }
         case EnumCycleStateAction.ACTION_COMPLETE:
             return {
@@ -38,7 +38,7 @@ export default function CyclesReducer(state: CycleState, action: PropsActionCycl
                     }
                     return cycle
                 }),
-                activeCycle: undefined
+                activeCycle: null
             }
         default: return state
     }

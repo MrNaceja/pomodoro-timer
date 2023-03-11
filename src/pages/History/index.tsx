@@ -8,7 +8,6 @@ import ptBR from 'date-fns/locale/pt-BR';
 export default function History() {
 
     const { cycles } = useContext(ContextCycles)
-
     return (
         <StyledHistoryContainer>
             <h1>Meu Histórico</h1>
@@ -28,8 +27,8 @@ export default function History() {
                         return (
                             <tr key={cycle.id}>
                                 <td>{cycle.task}</td>
-                                <td>{cycle.minutes} minutos</td>
-                                <td>{formatDistanceToNow(cycle.start, {addSuffix: true, locale: ptBR})}</td>
+                                <td>{cycle.minutes} minuto(s)</td>
+                                <td>{formatDistanceToNow(new Date(cycle.start), {addSuffix: true, locale: ptBR})}</td>
                                 <td>
                                 {
                                     cycle.completed && (

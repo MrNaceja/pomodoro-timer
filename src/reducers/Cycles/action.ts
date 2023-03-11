@@ -10,12 +10,12 @@ export const ActionsCycle = {
     },
     actionInterruptCycle: () => {
         return {
-            stateAction: EnumCycleStateAction.ACTION_START,
+            stateAction: EnumCycleStateAction.ACTION_INTERRUPT,
         }
     },
     actionCompleteCycle: () => {
         return {
-            stateAction: EnumCycleStateAction.ACTION_START,
+            stateAction: EnumCycleStateAction.ACTION_COMPLETE,
         }
     }
 }
